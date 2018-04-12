@@ -1,0 +1,7 @@
+
+
+
+class WriteToFile{
+ public:
+  SaveData(std::vector<struct player>);
+};

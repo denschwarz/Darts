@@ -1,6 +1,13 @@
 #include "display.h"
 #include "StructPlayer.h"
 
+/*
+███████ ██   ██  ██████  ██     ██     ██ ███    ██ ███████  ██████
+██      ██   ██ ██    ██ ██     ██     ██ ████   ██ ██      ██    ██
+███████ ███████ ██    ██ ██  █  ██     ██ ██ ██  ██ █████   ██    ██
+     ██ ██   ██ ██    ██ ██ ███ ██     ██ ██  ██ ██ ██      ██    ██
+███████ ██   ██  ██████   ███ ███      ██ ██   ████ ██       ██████
+*/
 
 void Display::ShowInfo(int N, int start){
   if(N == 1)
@@ -14,6 +21,14 @@ void Display::ShowInfo(int N, int start){
   return;
 }
 
+/*
+██████   ██████  ██    ██ ███    ██ ██████
+██   ██ ██    ██ ██    ██ ████   ██ ██   ██
+██████  ██    ██ ██    ██ ██ ██  ██ ██   ██
+██   ██ ██    ██ ██    ██ ██  ██ ██ ██   ██
+██   ██  ██████   ██████  ██   ████ ██████
+*/
+
 void Display::RoundStart(int N){
   std::cout << "\033[1;31m"
 	    << "                     ####################" << std::endl
@@ -24,6 +39,14 @@ void Display::RoundStart(int N){
 	    << "\033[0m\n" << std::endl;
   return;
 }
+
+/*
+███████ ████████  █████  ███    ██ ██████  ██ ███    ██  ██████
+██         ██    ██   ██ ████   ██ ██   ██ ██ ████   ██ ██
+███████    ██    ███████ ██ ██  ██ ██   ██ ██ ██ ██  ██ ██   ███
+     ██    ██    ██   ██ ██  ██ ██ ██   ██ ██ ██  ██ ██ ██    ██
+███████    ██    ██   ██ ██   ████ ██████  ██ ██   ████  ██████
+*/
 
 void Display::Standing(std::vector<player> players, int turn){
   //TITLE
@@ -41,10 +64,17 @@ void Display::Standing(std::vector<player> players, int turn){
     std::cout << "  " << std::setw(9) << players[i].AverageLeg.back() << "  |";
     std::cout << std::endl;
   }
-  
+
   return;
 }
 
+/*
+██      ███████  ██████      ██     ██  ██████  ███    ██
+██      ██      ██           ██     ██ ██    ██ ████   ██
+██      █████   ██   ███     ██  █  ██ ██    ██ ██ ██  ██
+██      ██      ██    ██     ██ ███ ██ ██    ██ ██  ██ ██
+███████ ███████  ██████       ███ ███   ██████  ██   ████
+*/
 
 void Display::LegWon(std::string name){
   std::cout << std::endl << std::endl << std::endl;
@@ -56,6 +86,13 @@ void Display::LegWon(std::string name){
   std::cout << std::endl;
 }
 
+/*
+███████ ████████  █████  ████████ ███████
+██         ██    ██   ██    ██    ██
+███████    ██    ███████    ██    ███████
+     ██    ██    ██   ██    ██         ██
+███████    ██    ██   ██    ██    ███████
+*/
 
 void Display::ShowStats(std::vector<player> players){
   std::cout << std::endl << std::endl << std::endl;

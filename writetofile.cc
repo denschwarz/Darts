@@ -52,7 +52,7 @@ void WriteToFile::GetDateStream(std::stringstream& datum){
   if(nun->tm_mon+1 < 10) datum << "0" << nun->tm_mon+1 << ".";
   else datum << nun->tm_mon+1 << ".";
   datum << nun->tm_year+1900 << ", ";
-   
+
   if(nun->tm_hour < 10) datum << "0" << nun->tm_hour << ":";
   else datum << nun->tm_hour << ":";
   if(nun->tm_min < 10) datum << "0" << nun->tm_min;

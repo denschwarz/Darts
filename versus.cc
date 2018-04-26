@@ -115,7 +115,8 @@ void ThrowDarts(player *p){
   int oldscore = p->ScoreLeft; //store in case of overthrown
   int lastDart = 3; // this only changes if player finishes with dart 1 or 2
   for(int dartnr=1; dartnr<=3; dartnr++){
-    std::cout << "\033[1;32m [Round "<< p->Scores[leg-1].size()+1 << "] \033[0m " << p->Name << " (DART " << dartnr << "): ";
+    if(dartnr==1) std::cout << "\033[1;32m [Round "<< (p->Scores[leg-1].size())/3+1 << "] \033[0m " << p->Name << " (DART " << dartnr << "): ";
+    else          std::cout << "            " << p->Name << " (DART " << dartnr << "): ";
     std::cin >> points[dartnr-1];
 
     // player cannot score more than 180
@@ -207,7 +208,7 @@ void PlayLeg(){
   while(play){
     for(unsigned int i=0; i<players.size(); i++){
       system("clear");
-      D.RoundStart(players[0].Scores[leg-1].size() + 1);
+      D.RoundStart((players[0].Scores[leg-1].size())/3 + 1);
       D.Standing(players,i);
       std::cout << std::endl << std::endl << std::endl;
       ThrowDarts(&players[i]);
@@ -215,7 +216,7 @@ void PlayLeg(){
 	players[i].LegsWon++;
 	players[i].LegWinner[leg-1] = true;
 	system("clear");
-	D.RoundStart(players[0].Scores[leg-1].size());
+	D.RoundStart((players[0].Scores[leg-1].size())/3);
 	D.Standing(players,i);
 	D.LegWon(players[i].Name);
 	return;

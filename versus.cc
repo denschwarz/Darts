@@ -15,16 +15,19 @@ int main(){
   Display D;
   D.ShowInfo(players.size(), start);
 
+  int offset = 0; //used for player rotation
   while(!GameOver){
     StartLeg();
-    PlayLeg();
+    PlayLeg(offset);
     if(!PlayAgain()){
       GameOver = true;
       system("clear");
       D.ShowStats(players);
       EndGame();
     }
-    RotatePlayers();
+    // change offset to rotate the beginning player of next leg
+    offset += 1;
+    if(offset == players.size()) offset = 0;
   }
 
   // write scores to file
@@ -38,7 +41,7 @@ int main(){
 ███████ ███████ ████████ ██    ██ ██████
 ██      ██         ██    ██    ██ ██   ██
 ███████ █████      ██    ██    ██ ██████
-     ██ ██         ██    ██    ██ ██
+██ ██         ██    ██    ██ ██
 ███████ ███████    ██     ██████  ██
 */
 
@@ -83,7 +86,7 @@ void Setup(){
 ███████ ████████  █████  ██████  ████████     ██      ███████  ██████
 ██         ██    ██   ██ ██   ██    ██        ██      ██      ██
 ███████    ██    ███████ ██████     ██        ██      █████   ██   ███
-     ██    ██    ██   ██ ██   ██    ██        ██      ██      ██    ██
+██    ██    ██   ██ ██   ██    ██        ██      ██      ██    ██
 ███████    ██    ██   ██ ██   ██    ██        ███████ ███████  ██████
 */
 
@@ -103,10 +106,10 @@ void StartLeg(){
 
 /*
 ████████ ██   ██ ██████   ██████  ██     ██     ██████   █████  ██████  ████████ ███████
-   ██    ██   ██ ██   ██ ██    ██ ██     ██     ██   ██ ██   ██ ██   ██    ██    ██
-   ██    ███████ ██████  ██    ██ ██  █  ██     ██   ██ ███████ ██████     ██    ███████
-   ██    ██   ██ ██   ██ ██    ██ ██ ███ ██     ██   ██ ██   ██ ██   ██    ██         ██
-   ██    ██   ██ ██   ██  ██████   ███ ███      ██████  ██   ██ ██   ██    ██    ███████
+██    ██   ██ ██   ██ ██    ██ ██     ██     ██   ██ ██   ██ ██   ██    ██    ██
+██    ███████ ██████  ██    ██ ██  █  ██     ██   ██ ███████ ██████     ██    ███████
+██    ██   ██ ██   ██ ██    ██ ██ ███ ██     ██   ██ ██   ██ ██   ██    ██         ██
+██    ██   ██ ██   ██  ██████   ███ ███      ██████  ██   ██ ██   ██    ██    ███████
 */
 
 void ThrowDarts(player *p){
@@ -202,35 +205,33 @@ bool PlayAgain(){
   else return false;
 }
 
-void PlayLeg(){
+void PlayLeg(int offset){
   bool play = true;
+  bool first = true; //for player rotation
   Display D;
   while(play){
     for(unsigned int i=0; i<players.size(); i++){
+      if(first){
+        i = offset;
+        first = false;
+      }
       system("clear");
-      D.RoundStart((players[0].Scores[leg-1].size())/3 + 1);
+      D.RoundStart((players[i].Scores[leg-1].size())/3 + 1);
       D.Standing(players,i);
       std::cout << std::endl << std::endl << std::endl;
       ThrowDarts(&players[i]);
       if(players[i].ScoreLeft == 0){
-	players[i].LegsWon++;
-	players[i].LegWinner[leg-1] = true;
-	system("clear");
-	D.RoundStart((players[0].Scores[leg-1].size())/3);
-	D.Standing(players,i);
-	D.LegWon(players[i].Name);
-	return;
+        players[i].LegsWon++;
+        players[i].LegWinner[leg-1] = true;
+        system("clear");
+        D.RoundStart((players[i].Scores[leg-1].size())/3);
+        D.Standing(players,i);
+        D.LegWon(players[i].Name);
+        return;
       }
     }
   }
 }
-
-void RotatePlayers(){
-  players.insert (players.begin(), players.back());
-  players.erase(players.end());
-  return;
-}
-
 
 void EndGame(){
   std::string quit;

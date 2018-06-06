@@ -28,8 +28,9 @@ void WriteToFile::SaveData(std::vector<struct player> players){
     CopyFile(tempfile2, newfile);
     tempfile2.close();
     for (unsigned int leg=0; leg<players[i].Scores.size(); leg++) {
-      // write date, time, leg number and if it was won
+      // write date, time, leg number, start score and if it was won
       newfile << datum.str() << ", " << "Leg" << leg+1 << ", ";
+      newfile << players[i].StartScore << ", ";
       if(players[i].LegWinner[leg]) newfile << "won";
       else                          newfile << "lost";
       for (unsigned int k=0; k<players[i].Scores[leg].size(); k++) {

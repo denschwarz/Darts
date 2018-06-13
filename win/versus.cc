@@ -1,21 +1,33 @@
 #include "versus.h"
 
+/*
+███    ███  █████  ██ ███    ██
+████  ████ ██   ██ ██ ████   ██
+██ ████ ██ ███████ ██ ██ ██  ██
+██  ██  ██ ██   ██ ██ ██  ██ ██
+██      ██ ██   ██ ██ ██   ████
+*/
+
+
+
 int main(){
   Setup();
   Display D;
   D.ShowInfo(players.size(), start);
 
+  int offset = 0; //used for player rotation
   while(!GameOver){
     StartLeg();
-    PlayLeg();
+    PlayLeg(offset);
     if(!PlayAgain()){
       GameOver = true;
-      //system("clear");
       std::cout << std::string(50, '\n');
       D.ShowStats(players);
       EndGame();
     }
-    RotatePlayers();
+    // change offset to rotate the beginning player of next leg
+    offset += 1;
+    if(offset == players.size()) offset = 0;
   }
 
   // write scores to file
@@ -25,10 +37,17 @@ int main(){
   return 0;
 }
 
+/*
+███████ ███████ ████████ ██    ██ ██████
+██      ██         ██    ██    ██ ██   ██
+███████ █████      ██    ██    ██ ██████
+     ██ ██         ██    ██    ██ ██
+███████ ███████    ██     ██████  ██
+*/
+
 void Setup(){
-  //system("clear");
   std::cout << std::string(50, '\n');
- 
+
   GameOver = false;
   leg=0;
 
@@ -57,9 +76,20 @@ void Setup(){
     players[i].LegsWon = 0;
     players[i].AverageTotal = 0;
     players[i].ScoreLeft = start;
+    players[i].StartScore = start;
   }
   return;
 }
+
+/*
+███████ ████████  █████  ██████  ████████     ██      ███████  ██████
+██         ██    ██   ██ ██   ██    ██        ██      ██      ██
+███████    ██    ███████ ██████     ██        ██      █████   ██   ███
+     ██    ██    ██   ██ ██  ██     ██        ██      ██      ██
+███████    ██    ██   ██ ██   ██    ██        ███████ ███████  ██████
+*/
+
+
 
 void StartLeg(){
   leg++;
@@ -73,6 +103,13 @@ void StartLeg(){
   return;
 }
 
+/*
+████████ ██   ██ ██████   ██████  ██     ██     ██████   █████  ██████  ████████ ███████
+   ██    ██   ██ ██   ██ ██    ██ ██     ██     ██   ██ ██   ██ ██   ██    ██    ██
+   ██    ███████ ██████  ██    ██ ██  █  ██     ██   ██ ███████ ██████     ██    ███████
+   ██    ██   ██ ██   ██ ██    ██ ██ ███ ██     ██   ██ ██   ██ ██   ██    ██         ██
+   ██    ██   ██ ██   ██  ██████   ███ ███      ██████  ██   ██ ██   ██    ██    ███████
+*/
 
 void ThrowDarts(player *p){
   //show display here
@@ -80,7 +117,8 @@ void ThrowDarts(player *p){
   int oldscore = p->ScoreLeft; //store in case of overthrown
   int lastDart = 3; // this only changes if player finishes with dart 1 or 2
   for(int dartnr=1; dartnr<=3; dartnr++){
-    std::cout << " [Round "<< p->Scores[leg-1].size()+1 << "]  " << p->Name << " (DART " << dartnr << "): ";
+    if(dartnr==1) std::cout << " [Round "<< (p->Scores[leg-1].size())/3+1 << "]  " << p->Name << " (DART " << dartnr << "): ";
+    else          std::cout << "            " << p->Name << " (DART " << dartnr << "): ";
     std::cin >> points[dartnr-1];
 
     // player cannot score more than 180
@@ -124,6 +162,15 @@ void ThrowDarts(player *p){
   return;
 }
 
+/*
+██   ██ ███████ ██      ██████  ███████ ██████  ███████
+██   ██ ██      ██      ██   ██ ██      ██   ██ ██
+███████ █████   ██      ██████  █████   ██████  ███████
+██   ██ ██      ██      ██      ██      ██   ██      ██
+██   ██ ███████ ███████ ██      ███████ ██   ██ ███████
+*/
+
+
 double AverageLeg(std::vector< std::vector<int> > vec, int leg){
   double sum = 0;
   double entries = 0;
@@ -157,37 +204,33 @@ bool PlayAgain(){
   else return false;
 }
 
-void PlayLeg(){
+void PlayLeg(int offset){
   bool play = true;
+  bool first = true; //for player rotation
   Display D;
   while(play){
     for(unsigned int i=0; i<players.size(); i++){
-      //system("clear");
+      if(first){
+        i = offset;
+        first = false;
+      }
       std::cout << std::string(50, '\n');
-      D.RoundStart(players[0].Scores[leg-1].size() + 1);
+      D.RoundStart((players[i].Scores[leg-1].size())/3 + 1);
       D.Standing(players,i);
       std::cout << std::endl << std::endl << std::endl;
       ThrowDarts(&players[i]);
       if(players[i].ScoreLeft == 0){
-	players[i].LegsWon++;
-	players[i].LegWinner[leg-1] = true;
-	//system("clear");
-	std::cout << std::string(50, '\n');
-	D.RoundStart(players[0].Scores[leg-1].size());
-	D.Standing(players,i);
-	D.LegWon(players[i].Name);
-	return;
+        players[i].LegsWon++;
+        players[i].LegWinner[leg-1] = true;
+        std::cout << std::string(50, '\n');
+        D.RoundStart((players[i].Scores[leg-1].size())/3);
+        D.Standing(players,i);
+        D.LegWon(players[i].Name);
+        return;
       }
     }
   }
 }
-
-void RotatePlayers(){
-  players.insert (players.begin(), players.back());
-  players.erase(players.end());
-  return;
-}
-
 
 void EndGame(){
   std::string quit;

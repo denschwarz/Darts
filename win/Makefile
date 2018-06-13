@@ -15,3 +15,6 @@ display.o: display.h display.cc
 
 writetofile.o: writetofile.h writetofile.cc
 	$(CC) -g -c -pthread -I/sw/include/root writetofile.cc
+
+clean:
+	rm -f $(OBJ)

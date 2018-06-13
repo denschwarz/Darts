@@ -28,8 +28,9 @@ void WriteToFile::SaveData(std::vector<struct player> players){
     CopyFile(tempfile2, newfile);
     tempfile2.close();
     for (unsigned int leg=0; leg<players[i].Scores.size(); leg++) {
-      // write date, time, leg number and if it was won
+      // write date, time, leg number, start score and if it was won
       newfile << datum.str() << ", " << "Leg" << leg+1 << ", ";
+      newfile << players[i].StartScore << ", ";
       if(players[i].LegWinner[leg]) newfile << "won";
       else                          newfile << "lost";
       for (unsigned int k=0; k<players[i].Scores[leg].size(); k++) {
@@ -47,11 +48,12 @@ void WriteToFile::GetDateStream(std::stringstream& datum){
   tm *nun;
   Zeitstempel = time(0);
   nun = localtime(&Zeitstempel);
-  datum << nun->tm_year+1900 << "-";
-  if(nun->tm_mon+1 < 10) datum << "0" << nun->tm_mon+1 << "-";
-  else datum << nun->tm_mon+1 << "-";
-  if(nun->tm_mday < 10) datum << "0" << nun->tm_mday << ", ";
-  else datum << nun->tm_mday << ", ";
+  if(nun->tm_mday < 10) datum << "0" << nun->tm_mday << ".";
+  else datum << nun->tm_mday << ".";
+  if(nun->tm_mon+1 < 10) datum << "0" << nun->tm_mon+1 << ".";
+  else datum << nun->tm_mon+1 << ".";
+  datum << nun->tm_year+1900 << ", ";
+
   if(nun->tm_hour < 10) datum << "0" << nun->tm_hour << ":";
   else datum << nun->tm_hour << ":";
   if(nun->tm_min < 10) datum << "0" << nun->tm_min;

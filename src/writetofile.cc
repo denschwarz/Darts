@@ -1,5 +1,5 @@
-#include "writetofile.h"
-#include "StructPlayer.h"
+#include "../include/writetofile.h"
+#include "../include/StructPlayer.h"
 
 void WriteToFile::SaveData(std::vector<struct player> players){
 
@@ -10,11 +10,11 @@ void WriteToFile::SaveData(std::vector<struct player> players){
   for(unsigned int i=0; i<players.size(); i++){
     // read old file and safe to tmp file
     std::stringstream filename;
-    filename << players[i].Name << ".txt";
+    filename << "data/" << players[i].Name << ".txt";
     std::ifstream oldfile;
     oldfile.open(filename.str().c_str());
     std::ofstream tempfile;
-    tempfile.open("tempfile.txt");
+    tempfile.open("data/tempfile.txt");
     CopyFile(oldfile, tempfile);
     oldfile.close();
     tempfile.close();
@@ -22,7 +22,7 @@ void WriteToFile::SaveData(std::vector<struct player> players){
     // create new file (which overwrites old file) -> copy from tempfile
     // (tempfile has to be ifstream now)
     std::ifstream tempfile2;
-    tempfile2.open("tempfile.txt");
+    tempfile2.open("data/tempfile.txt");
     std::ofstream newfile;
     newfile.open( filename.str().c_str() );
     CopyFile(tempfile2, newfile);

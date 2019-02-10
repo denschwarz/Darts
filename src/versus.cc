@@ -1,4 +1,4 @@
-#include "versus.h"
+#include "../include/versus.h"
 
 /*
 ███    ███  █████  ██ ███    ██

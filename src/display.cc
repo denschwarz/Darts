@@ -1,5 +1,5 @@
-#include "display.h"
-#include "StructPlayer.h"
+#include "../include/display.h"
+#include "../include/StructPlayer.h"
 
 /*
 ███████ ██   ██  ██████  ██     ██     ██ ███    ██ ███████  ██████

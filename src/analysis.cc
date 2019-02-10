@@ -1,4 +1,4 @@
-#include "analysis.h"
+#include "../include/analysis.h"
 
 using namespace std;
 
@@ -27,7 +27,7 @@ void doAnalysis(string name){
   // first open file and store data as vector<vector<string>> (one vector for every game)
   string line;
   ifstream infile;
-  infile.open (name+".txt");
+  infile.open ("data/"+name+".txt");
   vector<vector<string>> segments;
   while(getline(infile,line,';')){
     std::replace(line.begin(), line.end(), ',', ' '); // remove comma from string
@@ -158,7 +158,9 @@ vector<double> GetAverage(vector<vector<int>> score){
     for(unsigned int i=0; i<score[j].size(); i++){
       sum += score[j][i];
     }
-    double ave = (double) sum / score[j].size();
+    double ave;
+    if(score[j].size()) ave = (double) sum / score[j].size();
+    else                ave = 0;
     average3dart.push_back(3*ave);
   }
   return average3dart;
@@ -175,7 +177,9 @@ vector<double> GetAverageAdjusted(vector<vector<int>> score, vector<int> startsc
         size_adj = i+1;
       }
     }
-    double ave_adj = (double) sum_adj / size_adj;
+    double ave_adj;
+    if(size_adj) ave_adj = (double) sum_adj / size_adj;
+    else         ave_adj = 0;
     average3dart_adjusted.push_back(3*ave_adj);
   }
   return average3dart_adjusted;
@@ -196,7 +200,9 @@ vector<double> GetHitPercent(vector<vector<int>> score, vector<int> startscore){
       }
       sum += score[j][i]; // this has to be at the end of the loop
     }
-    double percent_all = (double) Nhits / size_hits * 100;
+    double percent_all;
+    if(size_hits) percent_all = (double) Nhits / size_hits * 100;
+    else          percent_all = 0;
     hitpercent.push_back(percent_all);
   }
   return hitpercent;
@@ -217,7 +223,9 @@ vector<double> GetTriplePercent(vector<vector<int>> score, vector<int> startscor
       }
       sum += score[j][i]; // this has to be at the end of the loop
     }
-    double percent_trip = (double) Ntriples / size_trip * 100;
+    double percent_trip;
+    if(size_trip) percent_trip = (double) Ntriples / size_trip * 100;
+    else          percent_trip = 0;
     triplepercent.push_back(percent_trip);
   }
   return triplepercent;

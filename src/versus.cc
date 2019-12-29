@@ -120,11 +120,27 @@ void ThrowDarts(player *p){
     if(dartnr==1) std::cout << "\033[1;32m [Round "<< (p->Scores[leg-1].size())/3+1 << "] \033[0m " << p->Name << " (DART " << dartnr << "): ";
     else          std::cout << "            " << p->Name << " (DART " << dartnr << "): ";
     std::cin >> points[dartnr-1];
+    while(!std::cin.good()){
+      std::cin.clear();
+      std::cin.ignore(1000000, '\n');
+      std::cout << "\033[1;31m [error] \033[0m Wrong input format! Try again." << std::endl;
+      std::cout << "            " << p->Name << " (DART " << dartnr << "): ";
+      std::cin >> points[dartnr-1];
+    }
 
+    
     // player cannot score more than 180
     while(points[dartnr-1] > 60){
-      std::cout << "\033[1;31m [error] \033[0m you can not score more than 60 points, try again: ";
+      std::cout << "\033[1;31m [error] \033[0m You can not score more than 60 points with one throw. Try again: " << std::endl;
+      std::cout << "            " << p->Name << " (DART " << dartnr << "): ";
       std::cin >> points[dartnr-1];
+      while(!std::cin.good()){
+	std::cin.clear();
+	std::cin.ignore(1000000, '\n');
+	std::cout << "\033[1;31m [error] \033[0m Wrong input format! Try again." << std::endl;
+	std::cout << "            " << p->Name << " (DART " << dartnr << "): ";
+	std::cin >> points[dartnr-1];
+      }
     }
 
     // player has to hit exactly 0

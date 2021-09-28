@@ -4,6 +4,7 @@
 #include <TCanvas.h>
 #include <TString.h>
 #include <TLegend.h>
+#include <TLine.h>
 #include <TH1.h>
 #include <TH1D.h>
 #include <iostream>

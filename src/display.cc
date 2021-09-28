@@ -55,7 +55,7 @@ void Display::Standing(std::vector<player> players, int turn){
   //PLAYERS
   for(unsigned int i=0; i < players.size(); ++i){
     std::cout << "      ------------------------------------------------------------" << std::endl;
-    if(i==turn) std::cout  << "  \033[1;31mX\033[0m " << std::setw(10) << players[i].Name << "  |";
+    if(i==turn) std::cout  << "  \033[1;31m>\033[0m " << std::setw(10) << players[i].Name << "  |";
     else std::cout  << "    "<< std::setw(10) << players[i].Name << "  |";
 
     std::cout << "  " << std::setw(4) << players[i].LegsWon << "  |";

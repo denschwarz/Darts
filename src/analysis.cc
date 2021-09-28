@@ -112,16 +112,35 @@ void doAnalysis(string name){
   A->Divide(1,2);
   A->cd(1);
   gPad->SetLeftMargin(0.15);
+  gPad->SetBottomMargin(0.25);
   //average3_adj->SetTitle(NAME);
+  double xmin = 0;
+  double xmax = (double) date.size();
+  vector<TLine*> lines;
+  lines.push_back(new TLine(xmin, 20, xmax, 20));
+  lines.push_back(new TLine(xmin, 40, xmax, 40));
+  lines.push_back(new TLine(xmin, 60, xmax, 60));
+  lines.push_back(new TLine(xmin, 80, xmax, 80));
+  lines.push_back(new TLine(xmin, 100, xmax, 100));
+
   average3_adj->GetYaxis()->SetTitle("3-dart average");
   average3_adj->GetYaxis()->SetRangeUser(0, 120);
   average3_adj->SetLineColor(kRed);
-  average3_adj->SetLineWidth(4);
+  average3_adj->SetLineWidth(2);
   average3_adj->Draw("HIST");
   average3->SetLineColor(kAzure+7);
-  average3->SetLineWidth(4);
+  average3->SetLineWidth(2);
   average3->Draw("HIST SAME");
-  TLegend *leg = new TLegend(0.45, 0.68, 0.85, 0.85);
+  for(auto l: lines){
+    l->SetLineStyle(2);
+    l->SetLineColor(13);
+    l->Draw("SAME");
+  }
+  average3_adj->Draw("HIST SAME");
+  average3->Draw("HIST SAME");
+
+
+  TLegend *leg = new TLegend(0.18, 0.68, 0.35, 0.85);
   leg->AddEntry(average3, "all darts","l");
   leg->AddEntry(average3_adj, "excluding last 100 points","l");
   leg->Draw();
@@ -129,16 +148,30 @@ void doAnalysis(string name){
 
   A->cd(2);
   gPad->SetLeftMargin(0.15);
+  gPad->SetBottomMargin(0.25);
   //hits->SetTitle(NAME);
+  vector<TLine*> lines2;
+  lines2.push_back(new TLine(xmin, 20, xmax, 20));
+  lines2.push_back(new TLine(xmin, 40, xmax, 40));
+  lines2.push_back(new TLine(xmin, 60, xmax, 60));
+  lines2.push_back(new TLine(xmin, 80, xmax, 80));
+
   hits->GetYaxis()->SetTitle("17/18/19/20 hit percentage [%]");
   hits->GetYaxis()->SetRangeUser(0, 120);
   hits->SetLineColor(kRed);
-  hits->SetLineWidth(4);
+  hits->SetLineWidth(2);
   hits->Draw("HIST");
   triples->SetLineColor(kAzure+7);
-  triples->SetLineWidth(4);
+  triples->SetLineWidth(2);
   triples->Draw("HIST SAME");
-  TLegend *legC = new TLegend(0.35, 0.68, 0.85, 0.85);
+  for(auto l: lines2){
+    l->SetLineStyle(2);
+    l->SetLineColor(13);
+    l->Draw("SAME");
+  }
+  hits->Draw("HIST SAME");
+  triples->Draw("HIST SAME");
+  TLegend *legC = new TLegend(0.18, 0.68, 0.35, 0.85);
   legC->AddEntry(hits, "singles/doubles/triples (excl. last 16 points)","l");
   legC->AddEntry(triples, "triples only (excl. last 50 points)","l");
   legC->Draw();

@@ -127,7 +127,6 @@ void ThrowDarts(player *p){
       std::cout << "            " << p->Name << " (DART " << dartnr << "): ";
       std::cin >> points[dartnr-1];
     }
-
     
     // player cannot score more than 180
     while(points[dartnr-1] > 60){
@@ -224,17 +223,25 @@ void PlayLeg(int offset){
   bool play = true;
   bool first = true; //for player rotation
   Display D;
+  int lastscore = 0;
+  std::string lastname;
   while(play){
     for(unsigned int i=0; i<players.size(); i++){
       if(first){
         i = offset;
-        first = false;
       }
       system("clear");
       D.RoundStart((players[i].Scores[leg-1].size())/3 + 1);
       D.Standing(players,i);
+      std::cout << std::endl << std::endl;
+      if(!first) std::cout << "    Last score: " << lastscore << " (" << lastname << ")" << std::endl;
+      else std::cout << std::endl;
       std::cout << std::endl << std::endl << std::endl;
+
+      int oldscore = players[i].ScoreLeft;
       ThrowDarts(&players[i]);
+      lastscore = oldscore - players[i].ScoreLeft;
+      lastname = players[i].Name;
       if(players[i].ScoreLeft == 0){
         players[i].LegsWon++;
         players[i].LegWinner[leg-1] = true;
@@ -244,6 +251,7 @@ void PlayLeg(int offset){
         D.LegWon(players[i].Name);
         return;
       }
+      if(first) first = false;
     }
   }
 }
